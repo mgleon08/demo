@@ -4,7 +4,9 @@ class EventsController < ApplicationController
   #GET/events
   before_action :set_event, :only => [ :show, :edit, :update, :destroy]
   def index
-  @events = Event.page(params[:page]).per(10)
+  @events = Event.page(params[:page]).per(15)
+
+  Rails.logger.debug("XXX": +@events.count)
 
   respond_to do |format|
     format.html #index.html.erb
@@ -61,7 +63,7 @@ class EventsController < ApplicationController
     redirect_to event_path(@event)
     else
     render :action => :edit
-  end
+    end
   end
 
   #DELETE /events/:id

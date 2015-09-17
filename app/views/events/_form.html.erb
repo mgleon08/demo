@@ -1,17 +1,17 @@
 <% if @event.errors.any? %>
       <ul>
       <% @event.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+        <li><%= msg %></li>t
       <% end %>
       </ul>
 <% end %>
 
-<p>
+<div class="form-group">
 <%= f.label :name, "Name" %>
-<%= f.text_field :name %>
-</p>
+<%= f.text_field :name, :class => "form-control" %>
+</div>
 
-<p>
+<div class="form-group">
 <%= f.label :description, "Description" %>
-<%= f.text_area :description %>
-</p>
+<%= f.text_area :description, :class => "form-control"%>
+</div>
