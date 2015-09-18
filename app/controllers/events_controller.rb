@@ -6,7 +6,7 @@ class EventsController < ApplicationController
   def index
   @events = Event.page(params[:page]).per(15)
 
-  Rails.logger.debug("XXX": +@events.count)
+  Rails.logger.debug("XXX"+@events.count)
 
   respond_to do |format|
     format.html #index.html.erb
