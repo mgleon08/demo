@@ -1,4 +1,11 @@
 <h2><%= @event.name %></h2>
+<h2><%= @event.status %></h2>
+<%@event.groups.each do |g| %>
+  <li> <%= g.name%> </li>
+<%end%>
+
+<p><%= @event.category_name %></p>
+
 <%= simple_format(@event.description) %>
 
 <p><%= link_to 'Back to index', events_path %></p>

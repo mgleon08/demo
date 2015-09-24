@@ -48,6 +48,7 @@ class EventAttendeesController < ApplicationController
     params.require(:attendee).permit(:name)
   end
 
+  protected
   def set_event
     @event = Event.find(params[:event_id])
   end

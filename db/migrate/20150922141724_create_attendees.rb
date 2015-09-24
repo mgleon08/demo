@@ -6,7 +6,6 @@ class CreateAttendees < ActiveRecord::Migration
       t.integer :event_id
       t.timestamps null: false
     end
-
     add_index :attendees , :event_id
   end
 end

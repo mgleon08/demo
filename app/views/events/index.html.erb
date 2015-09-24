@@ -1,13 +1,30 @@
 <h1>Events list</h1>
 
+<p><%= link_to "latest" , latest_events_path%></p>
+
+<%= form_tag events_path, :method => :get do %>
+<%= text_field_tag "keyword" %>
+<%= submit_tag "Search" %> <% end %>
+
+<%= form_tag bulk_update_events_path do %>
+
+<%= link_to 'Sort by Name', events_path( :order => "name") %>
+<%= link_to 'Sort by Default', events_path %>
+
 <table class="table">
 <% @events.each do |e| %>
   <tr>
     <td>
+    <%= check_box_tag "ids[]", e.id, false %>
     <%= e.name %>
     </td>
     <td>
+    <%= e.status %>
+    </td>
+    <td>
     <%= link_to "Show", event_path(e), :class => "btn btn-primary"%>
+
+    <%= link_to "Dashboard", dashboard_event_path(e), :class => "btn btn-primary"%>
 
     <%= link_to "Attendee List" ,event_attendees_path(e),:class => "btn btn-primary"%>
 
@@ -19,6 +36,11 @@
   </tr>
 <% end %>
 </table>
+
+<%= submit_tag "Delete"%>
+<%= submit_tag "Publish"%>
+<%= submit_tag "Draft"%>
+<% end %>
 <%= link_to 'New Event', new_event_path %>
 
 <%= paginate @events %>

@@ -4,7 +4,19 @@ class EventsController < ApplicationController
   #GET/events
   before_action :set_event, :only => [ :show, :edit, :update, :destroy]
   def index
-  @events = Event.page(params[:page]).per(15)
+
+    if params[:keyword]
+      @events = Event.where(["name like?","%#{params[:keyword]}%"])
+    else
+      @events = Event.all
+    end
+
+    if params[:order]
+      sort_by = (params[:order] == 'name') ? 'name' : 'id'
+      @events = Event.order(sort_by)
+    end
+
+      @events = @events.page(params[:page]).per(15)
 
   #Rails.logger.debug("XXX"+@events.count)
 
@@ -23,6 +35,26 @@ class EventsController < ApplicationController
 
   end
 
+  #GET/events/lastest
+  def latest
+    @events = Event.order("id ASC").limit(3)
+  end
+
+  #POST/events/bulk_delete
+  def bulk_update
+    ids = Array(params[:ids])
+    events = ids.map{|i| Event.find_by_id(i)}.compact
+    if params[:commit] == "Delete"
+      events.each {|e| e.destroy}
+    elsif params[:commit] == "Draft"
+    events.each {|e| e.update(:status=>"draft")}
+    else params[:commit] == "Publish"
+      events.each {|e| e.update(:status=>"published")}
+    end
+
+    redirect_to :back
+  end
+
   #GET /events/:id
   def show
     @page_title = @event.name
@@ -33,7 +65,10 @@ class EventsController < ApplicationController
       }
     end
   end
-
+  #GET/events/:id/dashboard
+  def dashboard
+    @event = Event.find(params[:id])
+  end
   #GET/events/new
   def new
     @event = Event.new
@@ -76,10 +111,12 @@ class EventsController < ApplicationController
   private
 
   def event_params
-    params.require(:event).permit(:name, :description)
+    params.require(:event).permit(:name, :description, :category_id,:status,
+    :group_ids=>[])
   end
 
   def set_event
   @event = Event.find(params[:id])
   end
+
 end
