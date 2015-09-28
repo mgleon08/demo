@@ -19,10 +19,18 @@
       <% if flash[:alert].present? %>
         <div class="alert alert-danger" role="alert">...</div><%= flash[:alert] %></div>
       <% end %>
-
+      <% if current_user %>
+          Hi <%=current_user.email%>
+          <%= link_to('登出', destroy_user_session_path, :method => :delete) %> |
+          <%= link_to('修改密碼', edit_registration_path(:user)) %>
+      <% else %>
+          <%= link_to('註冊', new_registration_path(:user)) %> |
+          <%= link_to('登入', new_session_path(:user)) %>
+      <% end %>
       <%= yield %>
-
+      <%if current_user &&current_user.admin?%>
       <%= link_to "Admin", admin_events_path%>
+      <%end%>
     </div>
   </div>
 </div>

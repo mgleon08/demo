@@ -18,12 +18,10 @@
       <% end %>
 
       <% if flash[:alert].present? %>
-        <div class="alert alert-danger" role="alert">...</div><%= flash[:alert] %></div>
+        <div class="alert alert-danger" role="alert"><%= flash[:alert] %></div>
       <% end %>
 
       <%= yield %>
-
-      <%= link_to "Admin", admin_events_path%>
     </div>
   </div>
 </div>

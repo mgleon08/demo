@@ -2,6 +2,7 @@ class EventsController < ApplicationController
 
   #GET/events/index
   #GET/events
+  before_action :authenticate_user!, :except =>[:index]
   before_action :set_event, :only => [ :show, :edit, :update, :destroy]
   def index
 
@@ -78,6 +79,8 @@ class EventsController < ApplicationController
 
   def create
     @event = Event.new(event_params)
+    @event.user = current_user
+
     if @event.save
       flash[:notice] = "新增成功"
       redirect_to events_path #告訴瀏覽器Http code:303
